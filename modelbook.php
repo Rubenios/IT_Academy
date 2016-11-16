@@ -26,13 +26,13 @@ class ModelBook
         $this->error = '';
     }
 
-    private function textControl($value, array $length) //Функция для проверки введенных пользователем данных
+    private function textControl($value, array $minmax) //Функция для проверки введенных пользователем данных
     {
         $this->formData[$value] = $_POST[$value]; //Передаем свойству formData данные, переданные через форму методом $_POST
         $this->formData[$value] = trim($this->formData[$value]); //Обрезаем пробелы
         $data = mb_strlen($this->formData[$value]); //Подсчитываем количество символов
-        if ($data < $length[0] || $data > $length[1]) //Проверяем, укладывается ли длина имени и сообщения в диапазон, заданный в методе writeToFile
-            $this->error .= "Maximum length in field \"$value\" must be from $length[0] to $length[1] characters!<br />";
+        if ($data < $minmax[0] || $data > $minmax[1]) //Проверяем, укладывается ли длина имени и сообщения в диапазон, заданный в методе writeToFile
+            $this->error .= "Maximum length in field \"$value\" must be from $minmax[0] to $minmax[1] characters!<br />";
         if (preg_match('/[^ \-A-Za-zа-яА-Я_0-9]+/u', $this->formData['username']))
             $this->error = "You must use only latin, cyrillic characters, \"space\" and \"_\" symbols in your name!<br />";
         $this->formData[$value] = str_replace("\t", " ", $this->formData[$value]); //Заменяем введенные пользователем символы табуляции на пробел
@@ -44,10 +44,10 @@ class ModelBook
 
     private function writeToFile() //Функция для записи в файл введенных и отформатированных пользовательских данных
     {
-        $this->textControl('username', array(2, 20)); //Передаем данные, полученные в функции textControl, поэтому отдельно данную функцию вызывать не надо
+        $this->textControl('username', array(2, 20)); //Передаем данные, полученные в функции textControl
         $this->textControl('message', array(2, 1000));
         if ($this->error) return;
-        $s = $this->formData['username'] . "\t" . date('l, j F Y \a\t H:i P') . "\t" . $this->formData['message'] . "\n"; //Создаем переменную, в которую помещаем данные из двух полей и дату в одну неразрывную строку через символы табуляции
+        $s = $this->formData['username'] . "\t" . date('l, j F Y \a\t H:i') . "\t" . $this->formData['message'] . "\n"; //Создаем переменную, в которую помещаем данные из двух полей и дату в одну неразрывную строку через символы табуляции
         file_put_contents("text.txt", $s, FILE_APPEND | LOCK_EX); //И записываем эти данные в текстовый файл
         header('Location: http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME']);
         exit;

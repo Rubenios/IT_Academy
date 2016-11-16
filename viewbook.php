@@ -26,10 +26,9 @@ class ViewBook
             <head>
               <meta charset="UTF-8">
               <title>Guest book Shuliak</title>
-              <link type="text/css" href="guestbook.css" rel="stylesheet">
-            </head>
-            <body>
-            <h2>Guest Book</h2>
+              </head>
+            <body style="width: 50%; font-family: Geneva, Arial, Helvetica, sans-serif; text-shadow: 1px 1px 1px darkgray; margin: 20px; padding: 10px">
+            <h2>Guest Book</h2><hr />
             <div>';
     }
 
@@ -38,9 +37,9 @@ class ViewBook
         foreach ($this->pageMessages as $value) //Получаем массив сообщений для одной страницы из класса ModelBook
         {
             $viewData = explode("\t", $value); //И разбиваем его на отдельные части по разделителям \t
-            echo "<p>User <b>$viewData[0]</b> wrote on <i>$viewData[1]</i><br />";
-            echo "This message:<br />$viewData[2]</p>";
-            echo "<hr />";
+            echo "<p>User <span style='color: red'><b>$viewData[0]</b></span>";
+            echo " wrote on <span style='color: blue'><i>$viewData[1]</i></span><br /><br />";
+            echo "This message:<br /><br /><span style='color: rgb(0, 79, 124)'>\"$viewData[2]\"<span></p><hr />";
         }
     }
 
@@ -54,7 +53,8 @@ class ViewBook
         if ($start < 1) $start = 1;
         $end = $this->pageNumber + $this->neighborPages;
         if ($end > $this->pageCount) $end = $this->pageCount;
-        for ($i = $start; $i <= $end; $i++) {
+        for ($i = $start; $i <= $end; $i++)
+        {
             if ($i == $this->pageNumber)
                 echo "$i &nbsp;";
             else
@@ -67,12 +67,12 @@ class ViewBook
         if ($this->error) {
             echo '<div><b>There are some input errors:<br />' . $this->error . '</div>';
         }
-        echo '<div><form method="post" action="indexbook.php">
+        echo '<p><form method="post" action="indexbook.php">
             Username:<br /><input type="text" name="username" maxlength="30" placeholder="Enter your name"><br />
             Message:<br /><textarea name="message" rows="5" cols="25" placeholder="Enter your message"></textarea><br />
             <input type="submit" value="Add!">
             <input type="reset" value="Empty fields!">
-            </form></div>';
+            </form></p>';
     }
 
     private function viewFooter() //Выводим HTML-код окончания страницы
