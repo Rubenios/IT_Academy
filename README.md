@@ -1,2 +1,2 @@
-# IT_Academy
+# KSR4GuestBook
 Education in IT-Academy
