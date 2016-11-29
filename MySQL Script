@@ -1,0 +1,20 @@
+USE schedule;
+
+SELECT groups.group_number, disc.disc_name, positions.position, teachers.surname, teachers.name, teachers.middle_name, 
+classroom.classroom_no, class_type.class_type, housings.address, schedule.date_class, schedule.begin_time, schedule.count_hours
+FROM groups, disc, disc_spec, positions, teachers, group_teacher, classroom, class_type, disc_hours, housings, schedule 
+WHERE groups.id_group=5 and disc.id_disc=disc_spec.id_disc and groups.id_group=group_teacher.id_group 
+and group_teacher.id_group_teacher=schedule.id_group_teacher and teachers.id_position=positions.id_position
+and teachers.id_teacher=group_teacher.id_teacher and classroom.id_housing=housings.id_housing 
+and classroom.id_classroom=schedule.id_classroom and class_type.id_class_type=disc_hours.id_class_type
+and disc_spec.id_disc_spec=disc_hours.id_disc_spec and group_teacher.id_disc_hours=disc_hours.id_disc_hours;
+
+SELECT positions.position, teachers.surname, teachers.name, teachers.middle_name, groups.group_number, disc.disc_name, 
+classroom.classroom_no, class_type.class_type, housings.address, schedule.date_class, schedule.begin_time, schedule.count_hours
+FROM  positions, teachers, groups, disc, disc_spec, group_teacher, classroom, class_type, disc_hours, housings, schedule 
+WHERE teachers.id_teacher=1 and disc.id_disc=disc_spec.id_disc and groups.id_group=group_teacher.id_group 
+and group_teacher.id_group_teacher=schedule.id_group_teacher and teachers.id_position=positions.id_position
+and teachers.id_teacher=group_teacher.id_teacher and classroom.id_housing=housings.id_housing 
+and classroom.id_classroom=schedule.id_classroom and class_type.id_class_type=disc_hours.id_class_type
+and disc_spec.id_disc_spec=disc_hours.id_disc_spec and group_teacher.id_disc_hours=disc_hours.id_disc_hours
+ORDER BY schedule.date_class, schedule.begin_time;
